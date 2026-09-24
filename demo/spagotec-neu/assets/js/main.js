@@ -324,6 +324,12 @@
     });
   });
 
+  gsap.utils.toArray('.cert__card').forEach(function (c) {
+    if (reduce) return;
+    gsap.fromTo(c, { rotationY: -24, rotationX: 8 }, { rotationY: 18, rotationX: -4, ease: 'none', scrollTrigger: { trigger: c, start: 'top bottom', end: 'bottom top', scrub: true,
+      onUpdate: function (self) { c.style.setProperty('--sx', (-60 + self.progress * 120) + '%'); } } });
+  });
+
   // stacked service cards
   mq.add('(min-width: 1101px)', function () {
     if (reduce) return;
