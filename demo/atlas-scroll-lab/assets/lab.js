@@ -41,7 +41,7 @@
 
     p=prog(mask); mask.style.setProperty('--m', ease(seg(p,.05,.7)).toFixed(4)); mask.style.setProperty('--mt', seg(p,.65,.85).toFixed(3));
 
-    p=prog(zoom); var z=seg(p,.05,.8); zoom.style.setProperty('--zs', (1+Math.pow(z,3)*30).toFixed(3)); zoom.style.setProperty('--zi', seg(p,.6,.85).toFixed(3));
+    p=prog(zoom); var z=seg(p,.05,.8); zoom.style.setProperty('--zs', (1+Math.pow(z,3)*30).toFixed(3)); zoom.style.setProperty('--zi', seg(p,.32,.6).toFixed(3));
 
     p=prog(horiz); var max=track.scrollWidth-innerWidth+Math.min(innerWidth*.06,96);
     track.style.setProperty('--hx', (-ease(seg(p,.05,.95))*max).toFixed(1)+'px');

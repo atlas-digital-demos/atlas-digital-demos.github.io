@@ -112,3 +112,4 @@ h1{font-size:clamp(48px,10vw,150px);line-height:.92;font-weight:700;letter-spaci
 .end{padding:12vh clamp(18px,4vw,48px);opacity:.6}
 
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:640px){.miles{height:120px}.miles div{font-size:10px}.miles b{font-size:15px}.miles div:nth-child(2){top:44px}.miles div:nth-child(4){top:44px}}
