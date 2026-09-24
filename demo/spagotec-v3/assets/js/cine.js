@@ -182,9 +182,9 @@ if (root) {
 
   function frameFor() {
     const portrait = innerWidth / innerHeight < 1;
-    const k = portrait ? 2.1 : innerWidth < 1100 ? 1.55 : 1.38;
+    const k = portrait ? 2.4 : innerWidth < 1100 ? 1.55 : 1.5;
     camB.set(5.4 * k, 3.9 * k, 7.2 * k);
-    if (portrait) lookB.set(0, -2.1, 0);
+    if (portrait) lookB.set(.6, -2.1, 0);
     else lookB.set(-1.9, -1.1, .9);
   }
   frameFor();
