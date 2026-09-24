@@ -84,24 +84,28 @@
     video.querySelector('source').src = video.dataset.srcM;
     video.load();
   }
-  if (video) {
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.setAttribute('muted', '');
-    media.style.backgroundImage = 'url(' + video.poster + ')';
-    var tryPlay = function () {
-      var p = video.play();
-      if (p && p.then) p.then(function () { media.classList.remove('is-still'); }).catch(function () { media.classList.add('is-still'); });
+  function autoplay(v) {
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.removeAttribute('controls');
+    var box = v.parentNode;
+    if (v.poster) box.style.backgroundImage = 'url(' + v.poster + ')';
+    var go = function () {
+      var p = v.play();
+      if (p && p.then) p.then(function () { box.classList.remove('is-still'); }).catch(function () { box.classList.add('is-still'); });
     };
-    video.addEventListener('playing', function () { media.classList.remove('is-still'); });
-    if (video.readyState >= 2) tryPlay(); else video.addEventListener('loadeddata', tryPlay, { once: true });
-    tryPlay();
+    v.addEventListener('playing', function () { box.classList.remove('is-still'); });
+    if (v.readyState >= 2) go(); else v.addEventListener('loadeddata', go, { once: true });
+    go();
     ['touchstart', 'pointerdown', 'scroll'].forEach(function (ev) {
-      addEventListener(ev, function once() { if (video.paused) tryPlay(); removeEventListener(ev, once); }, { passive: true });
+      addEventListener(ev, function once() { if (v.paused) go(); removeEventListener(ev, once); }, { passive: true });
     });
-    document.addEventListener('visibilitychange', function () { if (!document.hidden && video.paused) tryPlay(); });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && v.paused) go(); });
   }
+  document.querySelectorAll('video[autoplay]').forEach(autoplay);
 
   function heroIn() {
     if (!hero) return;
@@ -151,10 +155,40 @@
   gsap.utils.toArray('.reveal').forEach(function (el) {
     gsap.to(el, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
   });
-  gsap.utils.toArray('.h2').forEach(function (el) {
-    if (el.closest('.reveal') || el.classList.contains('reveal')) return;
-    gsap.from(el, { y: 30, opacity: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
-  });
+  function maskWords(el) {
+    var walk = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function (w) {
+            if (!w) return;
+            if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var o = document.createElement('span'); o.className = 'mw';
+            var i = document.createElement('span'); i.textContent = w; o.appendChild(i); frag.appendChild(o);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else if (n.nodeType === 1 && !n.classList.contains('tag')) walk(n);
+      });
+    };
+    walk(el);
+    return el.querySelectorAll('.mw > span');
+  }
+  if (!reduce) {
+    gsap.utils.toArray('.h2, .pagehead .h1, .cta .h1, .band blockquote').forEach(function (el) {
+      el.classList.remove('reveal');
+      var words = maskWords(el);
+      gsap.set(el, { opacity: 1, y: 0 });
+      gsap.from(words, { yPercent: 110, duration: 1.1, ease: 'power4.out', stagger: .035, scrollTrigger: { trigger: el, start: 'top 88%' } });
+    });
+    gsap.utils.toArray('.split__img, .strip figure').forEach(function (el) {
+      el.classList.add('rv');
+      var img = el.querySelector('img, video');
+      ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: function () {
+        gsap.to(el, { clipPath: 'inset(0% 0 0% 0)', duration: 1.4, ease: 'power4.inOut' });
+        if (img) gsap.fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.8, ease: 'power3.out' });
+      } });
+    });
+  }
 
   // statement word reveal
   gsap.utils.toArray('[data-split]').forEach(function (el) {
@@ -190,13 +224,10 @@
     gsap.utils.toArray('.split__img img, .split__img video, .strip figure img, .pcard__img img').forEach(function (img) {
       gsap.fromTo(img, { yPercent: -7 }, { yPercent: 7, ease: 'none', scrollTrigger: { trigger: img.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
-    gsap.utils.toArray('.strip figure').forEach(function (f, i) {
-      gsap.from(f, { y: 60 + i * 20, opacity: 0, duration: 1.3, ease: 'power3.out', scrollTrigger: { trigger: f, start: 'top 92%' } });
-    });
   }
 
   // 3D cards
-  var tilts = document.querySelectorAll('.svc, .pcard, .tile, .loc');
+  var tilts = document.querySelectorAll('.svc, .tile, .loc');
   if (fine && !reduce) {
     tilts.forEach(function (card) {
       var deep = card.classList.contains('svc');
@@ -227,30 +258,109 @@
       entries.forEach(function (en) {
         var v = en.target;
         if (en.isIntersecting) {
-          if (!v.src) { v.src = v.dataset.lazy; }
+          if (!v.src) { v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.src = v.dataset.lazy; }
           var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
         } else if (v.src) v.pause();
       });
     }, { rootMargin: '300px 0px' });
     lazy.forEach(function (v) { io.observe(v); });
   }
+  gsap.utils.toArray('.next').forEach(function (n) {
+    if (reduce) return;
+    gsap.fromTo(n.querySelector('.next__img'), { yPercent: -8 }, { yPercent: 8, ease: 'none', scrollTrigger: { trigger: n, start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.from(n.querySelector('.next__t'), { yPercent: 40, opacity: 0, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: n, start: 'top 80%' } });
+  });
   gsap.utils.toArray('.band').forEach(function (b) {
     if (reduce) return;
     gsap.fromTo(b.querySelector('video'), { yPercent: -6, scale: 1.08 }, { yPercent: 6, scale: 1, ease: 'none', scrollTrigger: { trigger: b, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
-  // horizontal track
+  // process: 3D coverflow along the pinned track
   var mq = gsap.matchMedia();
   document.querySelectorAll('.proc').forEach(function (proc) {
     var track = proc.querySelector('.proc__track');
+    var cards = Array.prototype.slice.call(track.querySelectorAll('.pcard'));
+    var bar = proc.querySelector('.proc__bar i');
+    var count = proc.querySelector('.proc__count b');
+    var sets = cards.map(function (c) {
+      return {
+        ry: gsap.quickSetter(c, 'rotationY', 'deg'), z: gsap.quickSetter(c, 'z', 'px'), rx: gsap.quickSetter(c, 'rotationX', 'deg'),
+        img: c.querySelector('.pcard__img img') ? gsap.quickSetter(c.querySelector('.pcard__img img'), 'xPercent') : null
+      };
+    });
+    function depth() {
+      var mid = innerWidth / 2, best = 0, bestD = 1e9;
+      cards.forEach(function (c, k) {
+        var r = c.getBoundingClientRect();
+        var d = (r.left + r.width / 2 - mid) / innerWidth;
+        var a = Math.max(-1, Math.min(1, d * 1.6));
+        sets[k].ry(-a * 28);
+        sets[k].z(-Math.abs(a) * 160);
+        sets[k].rx(Math.abs(a) * 3);
+        if (sets[k].img) sets[k].img(a * -8);
+        if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = k; }
+      });
+      if (count) count.textContent = String(best + 1).padStart(2, '0');
+    }
+    if (reduce) return;
     mq.add('(min-width: 701px)', function () {
-      var dist = function () { return Math.max(0, track.scrollWidth - track.clientWidth); };
+      var dist = function () { return Math.max(0, track.scrollWidth - innerWidth); };
       gsap.to(track, {
         x: function () { return -dist(); }, ease: 'none',
-        scrollTrigger: { trigger: proc, pin: proc.querySelector('.proc__pin'), start: 'top top', end: function () { return '+=' + dist(); }, scrub: .6, invalidateOnRefresh: true }
+        scrollTrigger: {
+          trigger: proc, pin: proc.querySelector('.proc__pin'), start: 'top top', end: function () { return '+=' + dist() * 1.2; }, scrub: .8, invalidateOnRefresh: true,
+          onUpdate: function (self) { if (bar) bar.style.transform = 'scaleX(' + self.progress + ')'; }
+        }
       });
+      gsap.ticker.add(depth);
+      gsap.from(cards, { y: 120, rotationX: -18, opacity: 0, duration: 1.4, ease: 'power3.out', stagger: .1, scrollTrigger: { trigger: proc, start: 'top 75%' } });
+      return function () { gsap.ticker.remove(depth); };
+    });
+    mq.add('(max-width: 700px)', function () {
+      var onS = function () { depth(); if (bar) bar.style.transform = 'scaleX(' + (track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth)) + ')'; };
+      track.addEventListener('scroll', onS, { passive: true });
+      onS();
+      return function () { track.removeEventListener('scroll', onS); };
     });
   });
+
+  // stacked service cards
+  mq.add('(min-width: 1101px)', function () {
+    if (reduce) return;
+    var stack = gsap.utils.toArray('.cards.stack .svc');
+    stack.forEach(function (card, k) {
+      var next = stack[k + 1];
+      if (!next) return;
+      gsap.to(card, { scale: .92 + k * .015, filter: 'brightness(.78)', ease: 'none', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top ' + (104 + (k + 1) * 16) + 'px', scrub: true } });
+    });
+  });
+
+  // scroll progress
+  var prog = document.querySelector('.progress i');
+  if (prog) ScrollTrigger.create({ start: 0, end: 'max', onUpdate: function (self) { prog.style.transform = 'scaleX(' + self.progress + ')'; } });
+
+  // marquee, speed follows scroll velocity
+  document.querySelectorAll('.marq__in').forEach(function (m) {
+    m.innerHTML += m.innerHTML;
+    if (reduce) return;
+    var x = 0, v = 1;
+    ScrollTrigger.create({ trigger: m, start: 'top bottom', end: 'bottom top', onUpdate: function (self) { v = 1 + Math.min(6, Math.abs(self.getVelocity()) / 300); } });
+    gsap.ticker.add(function () {
+      x -= .5 * v; v += (1 - v) * .05;
+      var w = m.scrollWidth / 2;
+      if (-x >= w) x += w;
+      m.style.transform = 'translate3d(' + x + 'px,0,0)';
+    });
+  });
+
+  // magnetic buttons
+  if (fine && !reduce) {
+    document.querySelectorAll('.btn').forEach(function (b) {
+      var bx = gsap.quickTo(b, 'x', { duration: .5, ease: 'power3.out' }), by = gsap.quickTo(b, 'y', { duration: .5, ease: 'power3.out' });
+      b.addEventListener('pointermove', function (e) { var r = b.getBoundingClientRect(); bx((e.clientX - r.left - r.width / 2) * .25); by((e.clientY - r.top - r.height / 2) * .35); });
+      b.addEventListener('pointerleave', function () { bx(0); by(0); });
+    });
+  }
 
   // SpagoShot stage
   var shot = document.querySelector('.shot');
