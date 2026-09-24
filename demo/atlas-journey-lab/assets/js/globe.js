@@ -14,11 +14,17 @@ document.querySelectorAll('canvas[data-globe]').forEach(cv=>{
   cv.addEventListener('pointermove',e=>{if(drag!==null){rot+=(e.clientX-drag)*.006;drag=e.clientX}});
   cv.addEventListener('pointerup',()=>drag=null);
   const proj=(p)=>{const c=Math.cos(rot),s=Math.sin(rot);let X=p[0]*c-p[2]*s,Z=p[0]*s+p[2]*c,Y=p[1];const ct=Math.cos(tilt),st=Math.sin(tilt);const Y2=Y*ct-Z*st,Z2=Y*st+Z*ct;return[X,Y2,Z2]};
-  function draw(){if(vis){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);const cx=W/2,cy=H/2;
-    let g=x.createRadialGradient(cx,cy,R*.9,cx,cy,R*1.5);g.addColorStop(0,'rgba(255,110,40,.55)');g.addColorStop(.25,'rgba(60,90,255,.35)');g.addColorStop(1,'rgba(20,30,120,0)');x.fillStyle=g;x.beginPath();x.arc(cx,cy,R*1.5,0,7);x.fill();
-    g=x.createRadialGradient(cx-R*.3,cy-R*.3,R*.1,cx,cy,R);g.addColorStop(0,'#0d1020');g.addColorStop(1,'#04050a');x.fillStyle=g;x.beginPath();x.arc(cx,cy,R,0,7);x.fill();
-    x.strokeStyle='rgba(255,120,50,.9)';x.lineWidth=1.5;x.beginPath();x.arc(cx,cy,R,Math.PI*1.05,Math.PI*1.95);x.stroke();
-    for(const p of pts){const q=proj(p);if(q[2]<-0.05)continue;const a=.25+.75*q[2];x.fillStyle=`rgba(225,230,255,${a.toFixed(2)})`;x.fillRect(cx+q[0]*R-.9,cy-q[1]*R-.9,1.8,1.8)}
+  let atm=null;
+  function bake(){atm=document.createElement('canvas');atm.width=W*dpr;atm.height=H*dpr;const a=atm.getContext('2d');a.setTransform(dpr,0,0,dpr,0,0);const cx=W/2,cy=H/2;
+    let g=a.createRadialGradient(cx,cy,R*.9,cx,cy,R*1.5);g.addColorStop(0,'rgba(255,110,40,.55)');g.addColorStop(.25,'rgba(60,90,255,.35)');g.addColorStop(1,'rgba(20,30,120,0)');a.fillStyle=g;a.beginPath();a.arc(cx,cy,R*1.5,0,7);a.fill();
+    g=a.createRadialGradient(cx-R*.3,cy-R*.3,R*.1,cx,cy,R);g.addColorStop(0,'#0d1020');g.addColorStop(1,'#04050a');a.fillStyle=g;a.beginPath();a.arc(cx,cy,R,0,7);a.fill();
+    a.strokeStyle='rgba(255,120,50,.9)';a.lineWidth=1.5;a.beginPath();a.arc(cx,cy,R,Math.PI*1.05,Math.PI*1.95);a.stroke()}
+  addEventListener('resize',()=>{atm=null});
+  const buckets=[[],[],[],[]];
+  function draw(){if(vis&&+getComputedStyle(cv).opacity>.02){if(!atm)bake();x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,cv.width,cv.height);x.drawImage(atm,0,0);x.setTransform(dpr,0,0,dpr,0,0);const cx=W/2,cy=H/2;
+    buckets.forEach(b=>b.length=0);
+    for(const p of pts){const q=proj(p);if(q[2]<-0.05)continue;buckets[Math.min(3,Math.max(0,Math.floor((q[2]+.05)*4)))].push(cx+q[0]*R-.9,cy-q[1]*R-.9)}
+    buckets.forEach((b,i)=>{x.fillStyle=`rgba(225,230,255,${(.3+i*.23).toFixed(2)})`;x.beginPath();for(let k=0;k<b.length;k+=2)x.rect(b[k],b[k+1],1.8,1.8);x.fill()});
     if(mk.length===2){const la=mk[0]*Math.PI/180,lo=mk[1]*Math.PI/180,q=proj([Math.cos(la)*Math.cos(lo),Math.sin(la),Math.cos(la)*Math.sin(lo)]);
       if(q[2]>0){const px=cx+q[0]*R,py=cy-q[1]*R,t=performance.now()/1000%1.6/1.6;x.strokeStyle=`rgba(255,80,60,${1-t})`;x.lineWidth=2;x.beginPath();x.arc(px,py,4+t*18,0,7);x.stroke();x.fillStyle='#ff5040';x.beginPath();x.arc(px,py,4,0,7);x.fill();
         if(label){x.fillStyle='rgba(255,255,255,.85)';x.font='600 11px system-ui';x.fillText(label.toUpperCase(),px+10,py+4)}}}
