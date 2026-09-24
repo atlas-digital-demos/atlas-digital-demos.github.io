@@ -8,6 +8,7 @@
   var s=document.currentScript||{}, d=s.dataset||{};
   var SEL=d.hero||'.pc-hero', IMG=d.img, DEP=d.depth, STR=+(d.strength||0.035), FIRE=d.fire!=='0';
   if(!IMG||!DEP) return;
+  var MOB=innerWidth<700||/iPhone|Android/.test(navigator.userAgent), STEPS=MOB?10:14;
   var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
   var FS='precision highp float;varying vec2 v;uniform sampler2D I,D;uniform vec2 R,S;uniform vec3 C;uniform float T,F;'+
@@ -18,7 +19,7 @@
   'float z=C.z;uv=(uv-.5)/(1.06+z*.10)+.5;'+
   /* steep parallax: march toward the viewer until depth matches */
   'vec2 off=C.xy*'+STR.toFixed(4)+';vec2 cur=uv;float lay=0.;'+
-  'for(int i=0;i<14;i++){float dd=texture2D(D,cur).r;float target=1.-lay;if(dd>=target)break;lay+=1./14.;cur=uv+off*(lay-.5)*2.;}'+
+  'for(int i=0;i<'+STEPS+';i++){float dd=texture2D(D,cur).r;float target=1.-lay;if(dd>=target)break;lay+=1./'+STEPS+'.;cur=uv+off*(lay-.5)*2.;}'+
   'float dep=texture2D(D,cur).r;'+
   /* scroll dolly: near things grow faster */
   'cur=(cur-.5)/(1.+z*.12*dep)+.5;'+
@@ -63,14 +64,14 @@
       size(); addEventListener('resize',size); requestAnimationFrame(loop); setTimeout(function(){cv.style.opacity=1;},30);
     }
     im.onload=dm.onload=ready; im.src=IMG; dm.src=DEP;
-    var dpr=Math.min(devicePixelRatio||1,innerWidth<700?1.5:1.25);
+    var dpr=Math.min(devicePixelRatio||1,MOB?1:1.25);
     function size(){var r=hero.getBoundingClientRect();cv.width=Math.max(2,r.width*dpr|0);cv.height=Math.max(2,r.height*dpr|0);gl.viewport(0,0,cv.width,cv.height);}
     var tx=0,ty=0,cx=0,cy=0,vis=true,t0=performance.now(),last=t0,gyro=false;
     addEventListener('pointermove',function(e){tx=(e.clientX/innerWidth-.5)*2;ty=(e.clientY/innerHeight-.5)*2;last=performance.now();},{passive:true});
     addEventListener('deviceorientation',function(e){if(e.gamma==null)return;gyro=true;tx=Math.max(-1,Math.min(1,e.gamma/25));ty=Math.max(-1,Math.min(1,(e.beta-45)/25));},{passive:true});
     if('IntersectionObserver' in window) new IntersectionObserver(function(es){vis=es[0].isIntersecting; if(vis) requestAnimationFrame(loop);}).observe(hero);
     var running=false;
-    function loop(now){ if(!cv.isConnected&&got>=2){return;} if(!vis){running=false;return;} running=true;
+    function loop(now){ if(!cv.isConnected&&got>=2){return;} if(!vis){running=false;return;} if(document.documentElement.classList.contains('atl-intro-on')){requestAnimationFrame(loop);return;} running=true;
       var t=(now-t0)/1000, idle=(now-last)>2500&&!gyro;
       var ax=idle?Math.sin(t*.31)*.55:tx, ay=idle?Math.sin(t*.23+1.3)*.35:ty;
       if(rm){ax=ay=0;}
