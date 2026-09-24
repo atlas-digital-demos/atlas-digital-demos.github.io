@@ -11,13 +11,17 @@ if (root) {
   const frames = new Array(count);
   let current = -1;
 
-  const load = i => new Promise(res => {
-    const im = new Image();
-    im.decoding = 'async';
-    im.onload = () => { frames[i] = im; res(); };
-    im.onerror = res;
-    im.src = base + String(i + 1).padStart(3, '0') + '.webp';
-  });
+  const load = i => {
+    const url = base + String(i + 1).padStart(3, '0') + '.webp';
+    if (window.createImageBitmap && window.fetch) {
+      return fetch(url).then(r => r.blob()).then(b => createImageBitmap(b)).then(bm => { frames[i] = bm; }).catch(() => {});
+    }
+    return new Promise(res => {
+      const im = new Image();
+      im.src = url;
+      (im.decode ? im.decode() : new Promise(r => { im.onload = r; })).then(() => { frames[i] = im; res(); }, res);
+    });
+  };
   const order = [];
   for (let step = 8; step >= 1; step = step / 2 | 0) {
     for (let i = 0; i < count; i += step) if (!order.includes(i)) order.push(i);
@@ -26,9 +30,9 @@ if (root) {
   (async () => { for (let k = 0; k < order.length; k += 6) await Promise.all(order.slice(k, k + 6).map(load)); })();
 
   function sizeSeq() {
-    const d = Math.min(devicePixelRatio || 1, 2);
-    seqCv.width = seqCv.clientWidth * d;
-    seqCv.height = seqCv.clientHeight * d;
+    const d = mobile ? 1 : Math.min(devicePixelRatio || 1, 1.5);
+    seqCv.width = Math.round(seqCv.clientWidth * d);
+    seqCv.height = Math.round(seqCv.clientHeight * d);
     current = -1;
   }
   function nearest(i) {
@@ -38,15 +42,23 @@ if (root) {
     }
     return null;
   }
-  function drawSeq(p) {
-    const i = Math.min(count - 1, Math.round(p * (count - 1)));
-    if (i === current && frames[i]) return;
-    const im = nearest(i);
-    if (!im) return;
-    if (frames[i]) current = i;
+  function paint(im, a) {
     const W = seqCv.width, H = seqCv.height, s = Math.max(W / im.width, H / im.height);
     const w = im.width * s, h = im.height * s;
+    ctx.globalAlpha = a;
     ctx.drawImage(im, (W - w) / 2, (H - h) / 2, w, h);
+  }
+  function drawSeq(p) {
+    const f = p * (count - 1), i = Math.floor(f), t = Math.round((f - i) * 12) / 12;
+    const key = i + t;
+    if (key === current) return;
+    const a = frames[i] || nearest(i);
+    if (!a) return;
+    const b = frames[Math.min(count - 1, i + 1)];
+    paint(a, 1);
+    if (b && t > 0 && frames[i]) paint(b, t);
+    ctx.globalAlpha = 1;
+    if (frames[i] && (b || t === 0)) current = key;
   }
   sizeSeq();
   addEventListener('resize', sizeSeq);
@@ -231,7 +243,8 @@ if (root) {
     surf: root.querySelector('.cine__layer--surface'),
     three: root.querySelector('.cine__layer--3d'),
     texts: root.querySelectorAll('.cine__text'),
-    bar: root.querySelector('.cine__bar i')
+    bar: root.querySelector('.cine__bar i'),
+    facts: root.querySelector('.cine__facts')
   };
 
   function update(p) {
@@ -250,16 +263,25 @@ if (root) {
       t.style.opacity = o;
       t.style.transform = `translateY(${(1 - o) * (p < a + .04 ? 30 : -30)}px)`;
     });
+    if (els.facts) els.facts.style.opacity = 1 - seg(p, .1, .16);
     if (els.bar) els.bar.style.transform = `scaleX(${p})`;
   }
 
+  let target = 0, shown = -1, ticking = false;
+  const tick = () => {
+    const d = target - shown;
+    shown = Math.abs(d) < .0004 ? target : shown + d * .22;
+    update(shown);
+    if (shown !== target) requestAnimationFrame(tick); else ticking = false;
+  };
+  const go = p => { target = p; if (shown < 0) shown = p; if (!ticking) { ticking = true; requestAnimationFrame(tick); } };
   const start = () => {
     if (!window.ScrollTrigger || reduce) { update(.2); return; }
     ScrollTrigger.create({
-      trigger: root, start: 'top top', end: 'bottom bottom', scrub: true,
-      onUpdate: self => update(self.progress)
+      trigger: root, start: 'top top', end: 'bottom bottom',
+      onUpdate: self => go(self.progress)
     });
-    update(0);
+    go(0);
   };
   if (document.readyState === 'complete') start(); else addEventListener('load', start);
   setTimeout(() => update(0), 300);
