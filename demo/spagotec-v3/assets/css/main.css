@@ -516,3 +516,10 @@ video::-webkit-media-controls-start-playback-button, video::-webkit-media-contro
 .cine__bar i { position: absolute; inset: 0; background: var(--on-dark); transform: scaleX(0); transform-origin: left; }
 @media (max-width: 1100px) { .cine__text--right { left: var(--pad); right: var(--pad); } }
 @media (max-width: 700px) { .cine { height: 520vh; } .cine__text { bottom: 96px; } .cine__lab { font-size: 10px; } }
+@media (min-width: 1101px) { .cine__text--right { bottom: auto; top: 50%; transform: translateY(-50%); left: var(--pad); right: auto; max-width: 480px; } }
+.cine__layer--3d { background: radial-gradient(110% 90% at 62% 45%, #2a3135 0%, #14181b 72%); }
+.cine__lab { font-size: 12px; letter-spacing: .08em; }
+@media (max-width: 1100px) { .cine__text--right { bottom: clamp(70px, 10vh, 120px); } }
+@media (min-width: 1101px) { .cine__text--right { top: 30%; } }
+.cine__lab { color: rgba(238, 241, 242, .88); font-size: 13px; }
+.cine__lab::before { background: rgba(238, 241, 242, .6); }

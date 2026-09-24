@@ -61,83 +61,108 @@ if (root) {
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
-  scene.add(new THREE.HemisphereLight(0xdfe6ea, 0x1a1e21, 1.1));
-  const key = new THREE.DirectionalLight(0xffffff, 2.2);
-  key.position.set(4, 8, 5);
+  const camera = new THREE.PerspectiveCamera(30, 1, .1, 100);
+  scene.add(new THREE.HemisphereLight(0xdde5ea, 0x15191c, .95));
+  const key = new THREE.DirectionalLight(0xfff0dc, 2.6);
+  key.position.set(5, 9, 6);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x9fb4c0, .8);
-  rim.position.set(-6, 3, -4);
+  const rim = new THREE.DirectionalLight(0x9fb6c4, 1.1);
+  rim.position.set(-7, 2, -5);
   scene.add(rim);
 
   function noiseTex(base, spread, n, scale) {
     const c = document.createElement('canvas');
-    c.width = c.height = 256;
+    c.width = c.height = 512;
     const g = c.getContext('2d');
     g.fillStyle = `rgb(${base},${base + 2},${base + 4})`;
-    g.fillRect(0, 0, 256, 256);
+    g.fillRect(0, 0, 512, 512);
     for (let k = 0; k < n; k++) {
-      const v = base + (Math.random() - .3) * spread | 0, r = (Math.random() * .8 + .4) * scale;
-      g.fillStyle = `rgb(${v},${v + 2},${v + 4})`;
+      const v = base + (Math.random() - .25) * spread | 0, r = (Math.random() * .8 + .4) * scale;
+      g.fillStyle = `rgb(${v},${v + 2},${v + 5})`;
       g.beginPath();
-      g.ellipse(Math.random() * 256, Math.random() * 256, r, r * .75, Math.random() * 3, 0, 7);
+      g.ellipse(Math.random() * 512, Math.random() * 512, r, r * .75, Math.random() * 3, 0, 7);
       g.fill();
     }
     const t = new THREE.CanvasTexture(c);
     t.wrapS = t.wrapT = THREE.RepeatWrapping;
     t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
     return t;
   }
 
-  const LEN = 4, HW = 2.6, NOTCH = [[-.18, 0], [-.06, -.45], [-.1, -.8], [0, -1.15], [.1, -.8], [.06, -.45], [.2, 0]];
-  const layers = [
-    { name: 'Deckschicht', y0: -.5, y1: 0, tex: noiseTex(58, 90, 1600, 3), notch: true },
-    { name: 'Binderschicht', y0: -1.25, y1: -.5, tex: noiseTex(48, 80, 900, 5), notch: true },
-    { name: 'Tragschicht', y0: -2.3, y1: -1.25, tex: noiseTex(62, 70, 500, 8), notch: false }
-  ];
+  const LEN = 4, HW = 2.4, DEPTH = 1.1;
+  const cw = y => Math.max(.012, .17 * (1 + y / (DEPTH * 1.05)));
   const group = new THREE.Group();
   scene.add(group);
-  layers.forEach(L => {
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0xa9b3b8, transparent: true, opacity: .32 });
+
+  function slab(points, mat, parent) {
     const sh = new THREE.Shape();
-    sh.moveTo(-HW, L.y0);
-    sh.lineTo(HW, L.y0);
-    sh.lineTo(HW, L.y1);
-    if (L.notch) {
-      sh.lineTo(.2, L.y1);
-      NOTCH.slice().reverse().forEach(([x, y]) => { const yy = Math.max(y, L.y0 + .02); if (yy <= L.y1) sh.lineTo(x, yy); });
-    }
-    sh.lineTo(-HW, L.y1);
+    points.forEach(([x, y], k) => k ? sh.lineTo(x, y) : sh.moveTo(x, y));
     sh.closePath();
-    const geo = new THREE.ExtrudeGeometry(sh, { depth: LEN, bevelEnabled: false });
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: LEN, bevelEnabled: false, curveSegments: 12 });
     geo.translate(0, 0, -LEN / 2);
-    L.tex.repeat.set(1.2, 1.2);
-    const mat = new THREE.MeshStandardMaterial({ map: L.tex, roughness: .92, metalness: 0 });
     const m = new THREE.Mesh(geo, mat);
-    L.mesh = m;
-    L.label = root.querySelector(`[data-layer="${L.name}"]`);
-    group.add(m);
+    m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), edgeMat));
+    parent.add(m);
+    return m;
+  }
+  const crackSide = (y0, y1, side, steps = 6) => {
+    const out = [];
+    for (let k = 0; k <= steps; k++) { const y = y0 + (y1 - y0) * k / steps; out.push([side * cw(y), y]); }
+    return out;
+  };
+
+  const L = [
+    { name: 'Deckschicht', y0: -.5, y1: 0, tex: noiseTex(60, 95, 5200, 3.2) },
+    { name: 'Binderschicht', y0: -1.25, y1: -.5, tex: noiseTex(50, 85, 2600, 5) },
+    { name: 'Tragschicht', y0: -2.3, y1: -1.25, tex: noiseTex(64, 75, 1200, 9) }
+  ];
+  L.forEach(l => {
+    l.group = new THREE.Group();
+    group.add(l.group);
+    l.tex.repeat.set(.6, .6);
+    const mat = new THREE.MeshStandardMaterial({ map: l.tex, roughness: .93, metalness: 0 });
+    if (l.y0 > -DEPTH) {
+      slab([[-HW, l.y0], ...crackSide(l.y0, l.y1, -1).map(([x, y]) => [x, y]), [-HW, l.y1]].reverse().concat([]), mat, l.group);
+      slab([[HW, l.y0], [HW, l.y1], ...crackSide(l.y1, l.y0, 1)], mat, l.group);
+    } else if (l.y1 > -DEPTH) {
+      slab([[-HW, l.y0], [HW, l.y0], [HW, l.y1], ...crackSide(l.y1, -DEPTH, 1), ...crackSide(-DEPTH, l.y1, -1), [-HW, l.y1]], mat, l.group);
+    } else {
+      slab([[-HW, l.y0], [HW, l.y0], [HW, l.y1], [-HW, l.y1]], mat, l.group);
+    }
+    l.label = root.querySelector(`[data-layer="${l.name}"]`);
   });
 
-  const seamShape = new THREE.Shape();
-  seamShape.moveTo(-.55, 0);
-  seamShape.quadraticCurveTo(-.45, .06, -.2, .06);
-  NOTCH.forEach(([x, y]) => seamShape.lineTo(x * .92, Math.max(y, -1.1)));
-  seamShape.lineTo(.2, .06);
-  seamShape.quadraticCurveTo(.45, .06, .55, 0);
-  seamShape.closePath();
-  const seamGeo = new THREE.ExtrudeGeometry(seamShape, { depth: LEN, bevelEnabled: false });
-  seamGeo.translate(0, 0, -LEN / 2);
-  const seamMat = new THREE.MeshStandardMaterial({ color: 0x0c0e10, roughness: .18, metalness: .1, transparent: true, opacity: 0 });
-  const seam = new THREE.Mesh(seamGeo, seamMat);
-  group.add(seam);
+  const seamMat = new THREE.MeshStandardMaterial({ color: 0x101316, roughness: .16, metalness: .05, transparent: true, opacity: 0 });
+  const topSeam = [[-.52, .004]];
+  for (let k = 0; k <= 10; k++) { const t = k / 10; topSeam.push([-.52 + t * .34, .004 + Math.sin(t * Math.PI / 2) * .05]); }
+  topSeam.push([.18, .054]);
+  for (let k = 0; k <= 10; k++) { const t = k / 10; topSeam.push([.18 + t * .34, .054 - (1 - Math.cos(t * Math.PI / 2)) * .05]); }
+  const seamA = slab([...topSeam, ...crackSide(0, -.5, 1).slice(1).map(([x, y]) => [x * .96, y]), ...crackSide(-.5, 0, -1).slice(0, -1).map(([x, y]) => [x * .96, y])], seamMat, L[0].group);
+  const seamB = slab([...crackSide(-.5, -DEPTH, 1).map(([x, y]) => [x * .96, y]), ...crackSide(-DEPTH, -.5, -1).map(([x, y]) => [x * .96, y])], seamMat, L[1].group);
+  [seamA, seamB].forEach(m => { m.children[0].material = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 }); });
 
-  const gritN = 260;
-  const grit = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.035, 0), new THREE.MeshStandardMaterial({ color: 0xb9bdb9, roughness: .7 }), gritN);
+  const shadowC = document.createElement('canvas');
+  shadowC.width = shadowC.height = 128;
+  const sg = shadowC.getContext('2d');
+  const grd = sg.createRadialGradient(64, 64, 4, 64, 64, 64);
+  grd.addColorStop(0, 'rgba(0,0,0,.55)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  sg.fillStyle = grd;
+  sg.fillRect(0, 0, 128, 128);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(9, 8), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowC), transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2;
+  group.add(shadow);
+
+  const gritN = 320;
+  const grit = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.036, 0), new THREE.MeshStandardMaterial({ color: 0xc2c6c2, roughness: .62 }), gritN);
   const gritData = [];
   const dummy = new THREE.Object3D();
-  for (let k = 0; k < gritN; k++) gritData.push({ x: (Math.random() - .5) * .9, z: (Math.random() - .5) * LEN * .96, d: Math.random(), r: Math.random() * 6, s: .7 + Math.random() * .8 });
-  group.add(grit);
+  for (let k = 0; k < gritN; k++) gritData.push({ x: (Math.random() - .5) * .78, z: (Math.random() - .5) * LEN * .97, d: Math.random(), r: Math.random() * 6, s: .7 + Math.random() * .7 });
+  L[0].group.add(grit);
 
   function resize3d() {
     const w = glCv.clientWidth, h = glCv.clientHeight;
@@ -152,20 +177,38 @@ if (root) {
   const seg = (p, a, b) => clamp((p - a) / (b - a));
   const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const v = new THREE.Vector3();
+  const camA = new THREE.Vector3(0, 6.2, .01), lookA = new THREE.Vector3(0, 0, 0);
+  const camB = new THREE.Vector3(), lookB = new THREE.Vector3(), look = new THREE.Vector3();
+
+  function frameFor() {
+    const portrait = innerWidth / innerHeight < 1;
+    const k = portrait ? 2.1 : innerWidth < 1100 ? 1.55 : 1.38;
+    camB.set(5.4 * k, 3.9 * k, 7.2 * k);
+    if (portrait) lookB.set(0, -2.1, 0);
+    else lookB.set(-1.9, -1.1, .9);
+  }
+  frameFor();
+  addEventListener('resize', frameFor);
 
   function render3d(p) {
-    const e = ease(seg(p, .78, .95));
-    const orbit = ease(seg(p, .7, .9));
-    const far = mobile ? 11.5 : 8.6;
-    camera.position.set(Math.sin(orbit * .9) * far * .7, 1.2 + (1 - orbit) * 7.4 + orbit * 2.4, .01 + Math.cos(orbit * .9) * far * orbit * .9 + (1 - orbit) * .01);
-    camera.lookAt(0, -1 + (1 - orbit) * 1, 0);
-    layers.forEach((L, i) => { L.mesh.position.y = -i * e * .55; });
-    seam.position.y = 0;
-    seamMat.opacity = ease(seg(p, .82, .9));
-    const g = seg(p, .88, .98);
+    const o = ease(seg(p, .7, .9));
+    const e = ease(seg(p, .8, .95));
+    camera.position.lerpVectors(camA, camB, o);
+    look.lerpVectors(lookA, lookB, o);
+    camera.lookAt(look);
+    L[0].group.position.y = e * .5;
+    L[1].group.position.y = 0;
+    L[2].group.position.y = -e * .5;
+    shadow.position.y = -2.32 - e * .5;
+    const s = ease(seg(p, .83, .9));
+    seamMat.opacity = s;
+    seamA.children[0].material.opacity = s * .35;
+    seamB.children[0].material.opacity = s * .35;
+    const g = seg(p, .88, .985);
     for (let k = 0; k < gritN; k++) {
-      const d = gritData[k], t = clamp(g * 1.6 - d.d * .6);
-      dummy.position.set(d.x * .9, .08 + (1 - ease(t)) * 2.5 - t * .04, d.z);
+      const d = gritData[k], t = clamp(g * 1.5 - d.d * .5), fall = clamp(t / .75), sink = clamp((t - .75) / .25);
+      const surf = .054 - Math.abs(d.x) * .02;
+      dummy.position.set(d.x * .66, surf + (1 - ease(fall)) * 2.2 - sink * .022, d.z);
       dummy.rotation.set(d.r, d.r * 2, 0);
       dummy.scale.setScalar(t > 0 ? d.s : 0);
       dummy.updateMatrix();
@@ -174,12 +217,12 @@ if (root) {
     grit.instanceMatrix.needsUpdate = true;
     renderer.render(scene, camera);
     const W = glCv.clientWidth, H = glCv.clientHeight;
-    layers.forEach(L => {
-      if (!L.label) return;
-      v.set(HW, (L.y0 + L.y1) / 2 + L.mesh.position.y, LEN / 2);
+    L.forEach(l => {
+      if (!l.label) return;
+      v.set(HW, (l.y0 + l.y1) / 2 + l.group.position.y, LEN / 2);
       v.project(camera);
-      L.label.style.transform = `translate(${(v.x * .5 + .5) * W + 18}px, ${(-v.y * .5 + .5) * H}px)`;
-      L.label.style.opacity = e;
+      l.label.style.transform = `translate(${(v.x * .5 + .5) * W + 14}px, ${(-v.y * .5 + .5) * H - 8}px)`;
+      l.label.style.opacity = e;
     });
   }
 
