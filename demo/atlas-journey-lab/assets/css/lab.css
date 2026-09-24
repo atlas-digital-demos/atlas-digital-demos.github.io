@@ -1,0 +1,38 @@
+@font-face{font-family:'Archivo';src:url('../fonts/archivo.woff2') format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:'Mono';src:url('../fonts/mono.woff2') format('woff2');font-weight:500;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%}
+body{font-family:'Archivo',system-ui,sans-serif;background:#fff;color:#111;overflow-x:clip}
+h1,h2{font-weight:800;font-stretch:80%;text-transform:uppercase;letter-spacing:-.02em;line-height:.92}
+.tag{position:absolute;left:20px;top:18px;z-index:20;font:500 11px 'Mono',monospace;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;background:rgba(255,255,255,.9);color:#111;border-radius:30px}
+.dark .tag{background:rgba(255,255,255,.12);color:#fff}
+svg.art{position:absolute;inset:0;width:100%;height:100%}
+.hero .stage{background:#03040a;color:#fff}
+.hero canvas{position:absolute;right:-6vw;top:4vh;width:72vw;height:92vh;cursor:grab;touch-action:pan-y}
+.hero .ht{position:absolute;left:6vw;bottom:14vh;max-width:620px}
+.hero h1{font-size:clamp(56px,8vw,128px)}.hero p{margin-top:18px;color:#b9bfd0;max-width:40ch}
+.hero .glow{position:absolute;inset:0;background:radial-gradient(circle at 62% 50%,#fff 0,#9fb4ff 18%,#2a3bff 42%,#0a0f3a 70%,#03040a 100%);opacity:0}
+.hero .white{position:absolute;inset:0;background:#fff;opacity:0}
+@media(max-aspect-ratio:1/1){.hero canvas{right:auto;left:-20vw;top:6vh;width:140vw;height:60vh}.hero .ht{bottom:8vh;left:6vw;right:6vw}}
+.stats{padding:18vh 6vw;display:grid;grid-template-columns:1.2fr 1fr;gap:6vw;align-items:center;position:relative}
+.stats h2{font-size:clamp(44px,6vw,96px)}.stats h2 em{font-style:normal;color:#8b8f97}
+.nums{display:grid;gap:34px}.nums b{display:block;font-size:clamp(56px,7vw,110px);font-weight:800;font-stretch:80%;line-height:1}.nums span{font-size:14px;color:#666}
+@media(max-width:800px){.stats{grid-template-columns:1fr}}
+.journey .stage{background:#f3f4f6}
+.over{position:absolute;left:6vw;right:6vw;bottom:3.5vh;display:flex;justify-content:space-between;align-items:flex-end;gap:30px;color:#fff;z-index:5}
+.over h2{font-size:clamp(26px,3.2vw,50px)}.icons{display:flex;gap:28px;font:500 11px 'Mono',monospace;letter-spacing:.1em;text-transform:uppercase}.icons i{display:block;width:28px;height:28px;border:1.5px solid #fff;border-radius:6px;margin-bottom:8px}
+@media(max-width:800px){.over{flex-direction:column;align-items:flex-start}.icons{gap:16px;flex-wrap:wrap}}
+.road .stage{background:#fff}
+.road .rt{position:absolute;left:6vw;top:14vh;z-index:5}.road h2{font-size:clamp(40px,5.4vw,88px)}.road p{max-width:34ch;margin-top:14px;color:#555}
+.ship .stage{background:#0a3a9e}
+.ocean{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),transparent 60%),repeating-radial-gradient(circle at 30% 40%,rgba(255,255,255,.05) 0 2px,transparent 3px 14px),linear-gradient(160deg,#0b47c2,#062a78)}
+.ship .shipw{position:absolute;left:50%;top:50%;width:min(16vw,120px);margin-left:calc(min(16vw,120px)/-2);height:min(72vw,540px);margin-top:calc(min(72vw,540px)/-2)}
+.ship .shipw svg{width:100%;height:100%;overflow:visible}
+.ship .st{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;z-index:5}.ship h2{font-size:clamp(44px,7vw,120px);text-shadow:0 10px 40px rgba(0,0,40,.4)}
+.cl{position:absolute;inset:-10%;pointer-events:none}
+.cl.a{background:radial-gradient(ellipse 30% 22% at 20% 30%,#fff 30%,transparent 70%),radial-gradient(ellipse 28% 20% at 75% 65%,#fff 30%,transparent 70%),radial-gradient(ellipse 22% 16% at 55% 20%,rgba(255,255,255,.9) 30%,transparent 70%)}
+.cl.b{background:radial-gradient(ellipse 35% 25% at 70% 25%,#fff 25%,transparent 70%),radial-gradient(ellipse 30% 22% at 25% 75%,#fff 25%,transparent 70%)}
+.cl.c{background:radial-gradient(ellipse 50% 40% at 50% 50%,#fff 35%,rgba(255,255,255,.6) 60%,transparent 80%)}
+.sky .stage{background:linear-gradient(#7fb0ff,#dfeaff 70%,#fff)}
+.sky .skt{position:absolute;left:6vw;bottom:10vh;z-index:6}.sky h2{font-size:clamp(40px,6vw,100px);color:#0e1a3a}
+.plane{position:absolute;left:50%;top:50%;width:min(60vw,560px);margin-left:calc(min(60vw,560px)/-2);margin-top:-12vh;z-index:5}
+.end{padding:16vh 6vw;text-align:center}.end h2{font-size:clamp(36px,5vw,72px)}.end p{margin:16px auto 0;max-width:52ch;color:#555}
