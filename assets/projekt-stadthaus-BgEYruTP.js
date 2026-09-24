@@ -1,0 +1,1 @@
+var e=`/assets/raumwerk-hero-XgNfGP9q.jpg`,t=`/assets/projekt-lindenhof-CjJRsnvN.jpg`,n=`/assets/projekt-klosterberg-TZlf51ID.jpg`,r=`/assets/projekt-stadthaus-BHc-ewTT.jpg`;export{e as i,n,t as r,r as t};

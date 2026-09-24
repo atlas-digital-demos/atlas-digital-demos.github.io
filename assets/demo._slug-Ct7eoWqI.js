@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-D3jfb0Ew.js";import{m as t,p as n}from"./index-dOnC3zPj.js";import{t as r}from"./RaumwerkPage-DQ8Xehm_.js";var i=e();function a(){let{site:e}=n.useLoaderData();return(0,i.jsx)(t.Provider,{value:e,children:(0,i.jsx)(r,{demo:!0},e.slug)})}export{a as component};
