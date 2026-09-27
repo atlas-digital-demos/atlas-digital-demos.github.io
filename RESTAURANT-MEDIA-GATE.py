@@ -20,7 +20,20 @@ if film.stat().st_size>1_200_000: sys.exit('FAIL: film exceeds 1.2 MB')
 check=subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(film)],text=True,capture_output=True)
 if check.returncode or float(check.stdout)<4: sys.exit('FAIL: video not playable or less than 4s')
 slug=film.parents[2].name
-source=(root/'src/components/PeperoncinoPage.tsx').read_text()
+source=(root/'src/components/RestaurantPage.tsx').read_text()
 if f'/reviews/20260927/{slug}/sites/{slug}/hero-zoom-v5.mp4' not in source or '<video className="pc-hero-video-v5"' not in source: sys.exit('FAIL: video not used in hero')
 if not (root/'dist/reviews/20260927'/slug/'sites'/slug/'hero.webp').exists(): sys.exit('FAIL: still fallback missing')
+# A copied customer's identifiable visuals or client-facing copy must never escape into these reviews.
+foreign=re.compile(r'(?i)peperoncino|brühl|pepchili|pep-chili|pc-chili|data-chili|pc-loader-chili')
+for f in (root/'src/components').glob('*.tsx'):
+ text=f.read_text()
+ if foreign.search(text):sys.exit(f'FAIL: other-client motif/text in {f}')
+for f in (root/'src/styles').glob('*.css'):
+ if foreign.search(f.read_text()):sys.exit(f'FAIL: other-client motif selector in {f}')
+for f in (root/'src/lib').glob('*.ts'):
+ if foreign.search(f.read_text()):sys.exit(f'FAIL: other-client motif/text in {f}')
+for f in (root/'public/reviews/20260927'/slug/'sites'/slug).glob('chili*.webp'):
+ sys.exit(f'FAIL: copied client chili imagery {f}')
+# Review the hero still and motif image visually against this customer as well;
+# token scanning cannot establish photo provenance or visual similarity.
 print('PASS: hashed external JS/CSS, no embedded base64, one restaurant-specific playable hero zoom, static fallback; HTML',html.stat().st_size,'JS',js.stat().st_size,'MP4',film.stat().st_size)
