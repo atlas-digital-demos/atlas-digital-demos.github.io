@@ -53,3 +53,4 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .v10-caps{display:grid;margin:22px 0 26px}.v10-caps p{margin:0 0 10px;font-size:17px;line-height:1.5;color:#11211e}.v10-caps b{font:700 12px Manrope;letter-spacing:.14em;margin-right:8px;color:#5d6b66}
 .v10-pin .v10-caps{min-height:64px;margin:18px 0 22px}.v10-pin .v10-caps p{grid-area:1/1;margin:0;font-size:20px}
 .v10-pin .statement-copy>p{font-size:15px}
+.statement .v10-caps p{color:#eef3e6}.statement .v10-caps b{color:#cff66e}
