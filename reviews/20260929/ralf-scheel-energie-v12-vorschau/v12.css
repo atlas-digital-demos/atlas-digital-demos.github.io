@@ -122,3 +122,5 @@ fieldset{margin-bottom:38px}
 .contact-wrap{max-width:1640px;grid-template-columns:.8fr 1.5fr;gap:5vw}
 .form-card{padding:clamp(28px,3vw,56px)!important}
 @media(max-width:900px){.contact-wrap{grid-template-columns:1fr;gap:50px}}
+@media(max-width:700px){.hero-image:after{background:linear-gradient(180deg,#081716cc 0%,#081716a6 45%,#081716e6 100%)!important}.hero-sub{text-shadow:0 1px 14px #000a}}
+@media(min-width:701px){.hero-image:after{background:linear-gradient(90deg,#081716b3 0%,#08171673 45%,#08171626 100%),linear-gradient(180deg,#08171655 0%,#08171600 40%,#081716aa 100%)!important}}
