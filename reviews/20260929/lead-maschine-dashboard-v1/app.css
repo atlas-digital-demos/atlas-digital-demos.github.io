@@ -12,7 +12,7 @@ a{color:inherit}.shell{display:grid;grid-template-columns:260px 1fr;min-height:1
 h1{font:700 clamp(28px,3vw,40px)/1.1 Manrope,"DM Sans",sans-serif;letter-spacing:-.04em;margin:0}.sub{color:var(--mut);margin:6px 0 0}
 .badge{display:inline-flex;gap:6px;align-items:center;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:600;background:#fff;border:1px solid var(--line)}
 .badge.mock{background:#fff4d6;border-color:#f0dca0;color:#7a5a00}.badge.ok{background:#e4f5d2;color:#2c5a12;border-color:#c5e5a5}.badge.off{background:#eee;color:#666}
-.grid{display:grid;gap:18px}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.grid{display:grid;gap:18px}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}.card h3{margin:0 0 14px;font:600 17px Manrope,sans-serif;letter-spacing:-.02em}
 .kpi b{display:block;font:700 34px/1 Manrope;letter-spacing:-.04em}.kpi span{color:var(--mut);font-size:13px}
 table{width:100%;border-collapse:collapse}th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
@@ -29,3 +29,4 @@ input[type=range]{padding:0}.btn{border:0;border-radius:10px;padding:12px 20px;f
 .toast{position:fixed;right:20px;bottom:20px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.3s;z-index:9}.toast.on{opacity:1;transform:none}
 .tog{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .burger{display:none}@media(max-width:860px){.shell{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;padding:14px}.brand{margin:0 14px 0 0}.nav{display:flex;flex-wrap:wrap;gap:4px}.side .foot{display:none}.f-row.two{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+.card{min-width:0;overflow-x:auto}td,th{padding-left:10px;padding-right:10px}.pill{display:inline-block;white-space:nowrap}
