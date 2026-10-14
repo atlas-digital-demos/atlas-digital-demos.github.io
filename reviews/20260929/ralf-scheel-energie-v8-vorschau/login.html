@@ -1,0 +1,27 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow,noarchive"/><title>Login | Ralf Scheel Energiekonzepte</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap"/>
+<style>
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;display:grid;grid-template-columns:1.1fr 1fr;background:#07110f;color:#f3f1e9;font:18px/1.55 'DM Sans',system-ui,sans-serif}
+.art{position:relative;overflow:hidden;background:#0b1d19 url(img/pv.jpg) center/cover}
+.art:before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,#07110fcc 0%,#0b1d1966 45%,#07110fee 100%)}
+.art .claim{position:absolute;left:56px;right:56px;bottom:56px}
+.art .claim small{letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:#cff66e}
+.art .claim h2{font:700 clamp(34px,4vw,60px)/1.02 Manrope,system-ui;letter-spacing:-.04em;margin:14px 0 0}
+.art .logo{position:absolute;left:56px;top:48px;font:800 22px Manrope,system-ui;letter-spacing:-.02em}.logo span{color:#cff66e;font-weight:500}
+.panel{display:flex;align-items:center;justify-content:center;padding:40px;background:radial-gradient(700px 500px at 80% 0%,#173a30 0,#07110f 70%)}
+.card{width:min(440px,100%);background:#ffffff0a;border:1px solid #ffffff1f;border-radius:20px;padding:44px 38px;backdrop-filter:blur(18px);box-shadow:0 40px 120px -30px #000}
+.card h1{font:700 36px/1.05 Manrope,system-ui;letter-spacing:-.04em;margin:0 0 8px}.card p{margin:0 0 28px;color:#a9bdb2;font-size:17px}
+label{display:block;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#a9bdb2;margin:20px 0 8px}
+input{width:100%;font:inherit;font-size:19px;padding:17px 18px;border:1px solid #ffffff2e;background:#07110f99;color:#fff;border-radius:12px;transition:border-color .2s,box-shadow .2s}
+input:focus{outline:0;border-color:#cff66e;box-shadow:0 0 0 4px #cff66e22}
+button{width:100%;margin-top:30px;padding:18px;font:700 19px Manrope,system-ui;background:#cff66e;color:#0b1d19;border:0;border-radius:12px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+button:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px #cff66e88}
+.back{display:inline-block;margin-top:26px;color:#8aa095;font-size:15px;text-decoration:none}.back:hover{color:#fff}
+@media(max-width:860px){body{grid-template-columns:1fr}.art{display:none}.panel{min-height:100vh;padding:20px}}
+</style></head><body>
+<aside class="art"><div class="logo">RS<span> / ENERGIE</span></div><div class="claim"><small>Mein Bereich</small><h2>Alle Anfragen.<br>Alle Termine.<br>Ein Blick.</h2></div></aside>
+<main class="panel"><div class="card"><h1>Willkommen zurück.</h1><p>Bitte melden Sie sich an.</p>
+<form id="f" autocomplete="on"><label for="u">Benutzername</label><input id="u" name="u" autocomplete="username"/><label for="p">Passwort</label><input id="p" name="p" type="password" autocomplete="current-password"/>
+<button type="submit">Anmelden</button></form>
+<a class="back" href="index.html">← zur Webseite</a></div></main>
+<script>document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();location.href='dashboard.html'})</script>
+</body></html>
