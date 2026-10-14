@@ -26,9 +26,6 @@ button:not(:disabled):hover,.btn:hover{transform:translateY(-2px)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #cff66e;outline-offset:3px}
 .footer-bottom .login-line{opacity:.7;font-size:11px}
 /* V9 */
-{display:flex;gap:42px;white-space:nowrap;width:max-content;font:800 clamp(44px,7vw,110px)/1 Manrope,system-ui;letter-spacing:-.04em;will-change:transform}
- i{font-style:normal;color:#cff66e;font-size:.4em;align-self:center}
- span:nth-child(4n+1){color:transparent;-webkit-text-stroke:1.5px #f3f1e9aa}
 .hero-image{will-change:clip-path}
 /* V9 Effekt-Paket */
 .v9-pre{position:fixed;inset:0;z-index:100000;background:#07110f;color:#f3f1e9;display:grid;place-items:center;transition:transform .9s cubic-bezier(.76,0,.24,1)}
@@ -42,7 +39,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .v9w>span{display:inline-block;will-change:transform}
 .service,.statement-art{transform-style:preserve-3d}
 .service-photo,.statement-art span{filter:saturate(.94) contrast(1.04) sepia(.05)}
-@media (prefers-reduced-motion:reduce){.v9-pre,.v9-pt,
+@media (prefers-reduced-motion:reduce){.v9-pre,.v9-pt{display:none}}
 .hero-image:after{background:linear-gradient(180deg,#08171666 0%,#08171626 40%,#081716b3 100%)!important}
 .hero-image{overflow:hidden}.hero-image video{filter:saturate(1.02) contrast(1.02)!important}
 .v10-strip{display:grid;grid-template-columns:repeat(3,1fr);background:#f3f1e9;border-block:1px solid #11211e22}
