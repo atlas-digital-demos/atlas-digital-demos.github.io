@@ -98,3 +98,4 @@ setTimeout(()=>{ScrollTrigger.sort();ScrollTrigger.refresh();const jump=()=>{Scr
 if(rm)return;
 if(document.readyState==='complete')setTimeout(go,300);else addEventListener('load',()=>setTimeout(go,300));
 })();
+;(()=>{const t=[...document.querySelectorAll('.statement,.contact')];if(!t.length)return;const s=new Set;const o=new IntersectionObserver(es=>{es.forEach(e=>{e.isIntersecting?s.add(e.target):s.delete(e.target)});document.body.classList.toggle('v13-nocta',s.size>0)},{threshold:.15});t.forEach(x=>o.observe(x))})();
