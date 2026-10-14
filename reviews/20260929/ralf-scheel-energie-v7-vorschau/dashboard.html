@@ -1,0 +1,48 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow,noarchive"/><title>Dashboard | Ralf Scheel Energiekonzepte</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f1e9;color:#11211e;font:20px/1.5 'DM Sans',system-ui,sans-serif}
+header{background:#0a1817;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header b{font:700 24px system-ui}header a{color:#cff66e;font-size:17px}
+.demo{background:#fff3b0;color:#4a3d00;padding:12px 24px;font-size:17px;font-weight:600}
+nav{display:flex;gap:8px;padding:16px 24px 0;flex-wrap:wrap}nav button{font:700 19px system-ui;padding:14px 22px;border:2px solid #102522;background:#fff;border-radius:8px;cursor:pointer;color:#102522}
+nav button[aria-selected=true]{background:#102522;color:#fff}
+main{padding:24px;max-width:1100px}h2{font:700 30px system-ui;margin:8px 0 18px;letter-spacing:-.02em}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.kpi{background:#fff;border:2px solid #d5d9cc;border-radius:12px;padding:22px}.kpi small{display:block;font-size:17px;color:#4d5f58}.kpi strong{font:700 54px/1.1 system-ui;display:block;margin-top:6px}.kpi span{font-size:16px;color:#4d5f58}
+table{width:100%;border-collapse:collapse;background:#fff;border:2px solid #d5d9cc;border-radius:12px;overflow:hidden}
+th{text-align:left;font-size:16px;color:#4d5f58;padding:14px 16px;background:#eceee3}td{padding:18px 16px;border-top:1px solid #e1e4d8;font-size:19px}
+tr.row{cursor:pointer}tr.row:hover td,tr.row:focus td{background:#f7fbe9}
+.tag{display:inline-block;padding:4px 12px;border-radius:99px;font-size:16px;font-weight:700}.ok{background:#d7f5c4;color:#18461b}.wait{background:#ffe9b8;color:#6b4700}.no{background:#e8e8e8;color:#444}
+.detail{background:#fff;border:2px solid #102522;border-radius:12px;padding:24px;margin-top:20px}.detail dl{display:grid;grid-template-columns:200px 1fr;gap:10px 16px;margin:0}.detail dt{color:#4d5f58}.detail dd{margin:0;font-weight:600}
+.btn{font:700 19px system-ui;padding:14px 22px;border-radius:8px;border:0;background:#102522;color:#fff;cursor:pointer}.btn.sec{background:#fff;color:#102522;border:2px solid #102522}
+textarea,select{width:100%;font:18px/1.5 system-ui;padding:14px;border:2px solid #9aa89f;border-radius:8px}
+.hint{background:#eef6e0;border-left:5px solid #7da46d;padding:14px 18px;margin:16px 0;font-size:17px}
+.hidden{display:none}@media(max-width:600px){td,th{padding:12px 8px;font-size:16px}.detail dl{grid-template-columns:1fr}}
+</style></head><body>
+<header><b>Ralf Scheel Energiekonzepte</b><span><a href="index.html">Webseite</a> &nbsp; <a href="login.html">Abmelden</a></span></header>
+<div class="demo">Vorschau mit Beispieldaten: Alle Zahlen und Namen sind erfunden. Es sind noch keine echten Anfragen, Termine oder Telefonate angebunden.</div>
+<nav role="tablist" aria-label="Bereiche"><button role="tab" aria-selected="true" data-t="uebersicht">Übersicht</button><button role="tab" aria-selected="false" data-t="anfragen">Anfragen</button><button role="tab" aria-selected="false" data-t="termine">Termine</button><button role="tab" aria-selected="false" data-t="assistent">Assistent</button></nav>
+<main>
+<section id="uebersicht"><h2>Guten Tag, Herr Scheel</h2>
+<div class="kpis"><div class="kpi"><small>Neue Anfragen (Woche)</small><strong>7</strong><span>davon 4 qualifiziert</span></div><div class="kpi"><small>Termine mit Ihnen</small><strong>3</strong><span>nächster: Do 10:30 Uhr</span></div><div class="kpi"><small>Telefonminuten (Monat)</small><strong>42 von 500</strong><span>Startpaket, einmalig</span></div></div>
+<h2 style="margin-top:34px">Zuletzt eingegangen</h2><div id="recent"></div><p><button class="btn" data-go="anfragen">Alle Anfragen ansehen</button></p></section>
+<section id="anfragen" class="hidden"><h2>Anfragen</h2><div class="hint">Tippen Sie auf eine Zeile, um alle Details zu sehen.</div><div id="leads"></div><div id="detail"></div></section>
+<section id="termine" class="hidden"><h2>Termine</h2><div id="appts"></div></section>
+<section id="assistent" class="hidden"><h2>Assistent (Telefon)</h2>
+<div class="hint">Hier sehen Sie, was der Assistent am Telefon sagt. Änderungen werden im Live-System erst nach Ihrer Bestätigung aktiv, und es bleibt immer die letzte Version zum Zurücksetzen.</div>
+<label for="pr"><b>Gesprächsanweisung</b></label><textarea id="pr" rows="10" readonly>Beispieltext (Vorschau): Sie sind die telefonische Assistentin der Energieberatung Scheel. Sie rufen Interessenten an, die ihre Nummer hinterlassen haben, und qualifizieren sie für ein kostenloses Erstgespräch. Natürliches, freundliches Deutsch, kurze Sätze, Sie-Form. Immer nur eine Frage auf einmal.</textarea>
+<p><label for="vo"><b>Stimme</b></label><select id="vo" disabled><option>Carola (Deutsch)</option></select></p>
+<p><button class="btn" disabled>Änderung speichern (im Live-System)</button> <button class="btn sec" disabled>Auf letzte Version zurück</button></p></section>
+</main>
+<script>
+const L=[{n:'Thomas Becker',t:'Photovoltaik',r:'Eigentümer',g:'Einfamilienhaus',plz:'41812',s:'qualifiziert',d:'Heute 09:12',tel:'0151 000 0001',note:'Dach ca. 90 m², Südseite, Entscheidung in 3 Monaten.'},{n:'Hausverwaltung Nord GmbH',t:'Mieterstrom',r:'Hausverwaltung',g:'Mehrfamilienhaus (24 WE)',plz:'40210',s:'Termin',d:'Gestern 16:40',tel:'0151 000 0002',note:'Eigentümerversammlung im Oktober, Termin Do 10:30.'},{n:'Sabine Kuhn',t:'Wärmepumpe',r:'Eigentümer',g:'Einfamilienhaus',plz:'50667',s:'offen',d:'Mo 18:05',tel:'0151 000 0003',note:'Rückruf zweimal nicht erreicht.'},{n:'Jürgen Maier',t:'Photovoltaik',r:'Eigentümer',g:'Einfamilienhaus',plz:'47051',s:'nicht passend',d:'Mo 11:20',tel:'0151 000 0004',note:'Kein Eigentümer.'}];
+const cls={'qualifiziert':'ok','Termin':'ok','offen':'wait','nicht passend':'no'};
+const tbl=(rows)=>`<table><thead><tr><th>Name</th><th>Thema</th><th>Stand</th><th>Eingang</th></tr></thead><tbody>${rows.map((x,i)=>`<tr class="row" tabindex="0" data-i="${i}"><td><b>${x.n}</b></td><td>${x.t}</td><td><span class="tag ${cls[x.s]}">${x.s}</span></td><td>${x.d}</td></tr>`).join('')}</tbody></table>`;
+document.getElementById('recent').innerHTML=tbl(L.slice(0,3));document.getElementById('leads').innerHTML=tbl(L);
+document.getElementById('appts').innerHTML='<table><thead><tr><th>Wann</th><th>Mit</th><th>Thema</th></tr></thead><tbody><tr><td><b>Do 10:30</b></td><td>Hausverwaltung Nord GmbH</td><td>Mieterstrom</td></tr><tr><td><b>Fr 14:00</b></td><td>Thomas Becker</td><td>Photovoltaik</td></tr><tr><td><b>Di 09:00</b></td><td>Beispiel Kunde</td><td>Wärmepumpe</td></tr></tbody></table>';
+function show(t){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==t));document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
+function open(i){const x=L[i];document.getElementById('detail').innerHTML=`<div class="detail"><h2>${x.n}</h2><dl><dt>Thema</dt><dd>${x.t}</dd><dt>Rolle</dt><dd>${x.r}</dd><dt>Gebäude</dt><dd>${x.g}</dd><dt>PLZ</dt><dd>${x.plz}</dd><dt>Telefon</dt><dd>${x.tel}</dd><dt>Stand</dt><dd>${x.s}</dd><dt>Notiz</dt><dd>${x.note}</dd></dl></div>`;show('anfragen');document.getElementById('detail').scrollIntoView({behavior:'smooth'})}
+document.addEventListener('click',e=>{const r=e.target.closest('tr.row');if(r){const id=r.closest('#recent')?+r.dataset.i:+r.dataset.i;open(id)}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('row'))e.target.click()});
+</script></body></html>

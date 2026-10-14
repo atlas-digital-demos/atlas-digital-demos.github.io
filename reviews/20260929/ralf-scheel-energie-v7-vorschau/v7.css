@@ -1,0 +1,19 @@
+/* V7: Fotos, Scroll-Effekte, Login-Link. Basis V5 unveraendert. */
+.service-photo .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transform:scale(1.14);transition:transform 1.2s cubic-bezier(.2,.7,.2,1);will-change:transform}
+.service:hover .service-photo .ph{transform:scale(1.2)}
+.service-photo.pv,.service-photo.heat,.service-photo.shared{background:#1c2d28}
+.service-photo .shared-glyph{display:none}
+.statement-art span{position:relative;overflow:hidden;padding:0;border:0;box-shadow:0 30px 80px #0a181766;opacity:0;transition:opacity .9s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.statement-art span img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.statement-art span:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,#0a1817cc)}
+.statement-art span b{position:absolute;left:16px;bottom:12px;z-index:1;color:#fff;font:700 clamp(26px,3vw,44px)/1 Manrope;letter-spacing:-.04em}
+.statement-art.in span{opacity:1}
+.statement-art span:nth-child(2){transition-delay:.15s}.statement-art span:nth-child(3){transition-delay:.3s}
+.statement-art{background:#102922}
+.footer-bottom .login-line{opacity:.55;font-size:10px}
+.footer-bottom .login-line a{text-decoration:none;letter-spacing:.14em;text-transform:uppercase}
+.footer-bottom .login-line a:hover{opacity:1;text-decoration:underline}
+.section h2,.statement h2{background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-size:0 0}
+.v7-fade{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.v7-fade.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.service-photo .ph,.statement-art span,.v7-fade{transition:none;transform:none;opacity:1}}
