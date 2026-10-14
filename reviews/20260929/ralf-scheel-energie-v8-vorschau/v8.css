@@ -21,12 +21,7 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;op
 .service{transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .6s}
 .service:hover{transform:translateY(-6px);box-shadow:0 40px 90px -40px #0a181799}
 .service-photo{overflow:hidden;clip-path:inset(0 0 0 0)}
-.v8-mask{clip-path:inset(0 0 100% 0);transition:clip-path 1.3s cubic-bezier(.2,.7,.2,1)}
-.v8-mask.in{clip-path:inset(0 0 0 0)}
-.v8-rise{opacity:0;transform:translateY(34px);filter:blur(6px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1),filter 1s ease}
-.v8-rise.in{opacity:1;transform:none;filter:none}
 a,button{transition:color .25s,background-color .25s,transform .25s,opacity .25s}
 button:not(:disabled):hover,.btn:hover{transform:translateY(-2px)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #cff66e;outline-offset:3px}
 .footer-bottom .login-line{opacity:.7;font-size:11px}
-@media (prefers-reduced-motion:reduce){.v8-mask,.v8-rise{clip-path:none;opacity:1;transform:none;filter:none;transition:none}}

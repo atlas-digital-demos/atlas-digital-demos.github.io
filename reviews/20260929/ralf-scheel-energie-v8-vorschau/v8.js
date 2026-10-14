@@ -10,9 +10,3 @@ let busy=false;
 function tick(){busy=false;const vh=innerHeight;imgs.forEach(im=>{const r=im.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;const p=(r.top+r.height/2-vh/2)/vh;im.style.translate='0 '+(Math.max(-1,Math.min(1,p))*-22)+'px'});}
 addEventListener('scroll',()=>{if(!busy){busy=true;requestAnimationFrame(tick)}},{passive:true});tick();
 })();
-(()=>{
-const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm)return;
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.service-photo').forEach(el=>{el.classList.add('v8-mask');io.observe(el)});
-document.querySelectorAll('.service-info h3,.step-list>*,.statement-copy p,.form-intro,.caption').forEach(el=>{el.classList.add('v8-rise');io.observe(el)});
-})();
