@@ -14,5 +14,5 @@ addEventListener('scroll',()=>{if(!busy){busy=true;requestAnimationFrame(tick)}}
 const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;if(rm)return;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
 document.querySelectorAll('.service-photo').forEach(el=>{el.classList.add('v8-mask');io.observe(el)});
-document.querySelectorAll('.section h2,.section .eyebrow,.statement p,.service h3,.step h3,.faq-item,.contact h2').forEach(el=>{el.classList.add('v8-rise');io.observe(el)});
+document.querySelectorAll('.service-info h3,.step-list>*,.statement-copy p,.form-intro,.caption').forEach(el=>{el.classList.add('v8-rise');io.observe(el)});
 })();
