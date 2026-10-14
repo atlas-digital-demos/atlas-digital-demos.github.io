@@ -1,0 +1,86 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow,noarchive"/><title>Übersicht | Ralf Scheel Energiekonzepte</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap"/>
+<style>
+*{box-sizing:border-box}:root{--bg:#f4f2ea;--ink:#0b1d19;--mut:#5b6e66;--line:#e2e4d9;--lime:#cff66e;--g:#14352c;--card:#fff}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.5 'DM Sans',system-ui,sans-serif;display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,#0a1b17,#07110f);color:#e9efe9;padding:30px 20px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.logo{font:800 21px Manrope,system-ui;letter-spacing:-.02em;padding:0 12px 30px}.logo span{color:var(--lime);font-weight:500}
+nav button{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:600 18px 'DM Sans',system-ui;color:#b6c7bd;background:none;border:0;border-radius:12px;padding:15px 14px;margin-bottom:4px;cursor:pointer;transition:background .2s,color .2s}
+nav button:hover{background:#ffffff0d;color:#fff}nav button[aria-selected=true]{background:var(--lime);color:#0b1d19}
+nav svg{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.side-foot{margin-top:auto;padding:0 12px;font-size:15px}.side-foot a{color:#8aa095;text-decoration:none;display:block;padding:6px 0}.side-foot a:hover{color:#fff}
+main{padding:40px 48px 70px;max-width:1180px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.top small{color:var(--mut);letter-spacing:.16em;text-transform:uppercase;font-size:13px}.top h1{font:700 42px/1.05 Manrope,system-ui;letter-spacing:-.04em;margin:6px 0 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:99px;padding:10px 18px;font-size:16px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 1px 0 #fff inset,0 24px 60px -40px #0b1d1944}
+.k1{grid-column:span 4}.k2{grid-column:span 4}.k3{grid-column:span 4}.wide{grid-column:span 8}.side{grid-column:span 4}.full{grid-column:span 12}
+.card small{color:var(--mut);font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+.big{font:700 64px/1 Manrope,system-ui;letter-spacing:-.05em;margin:12px 0 6px}.big em{font-style:normal;font-size:28px;color:var(--mut);letter-spacing:-.02em;font-weight:600}
+.sub{color:var(--mut);font-size:16px}
+.dark{background:linear-gradient(145deg,#14352c,#0a1b17);color:#fff;border-color:#14352c}.dark small,.dark .sub{color:#a9c2b6}.dark .big em{color:#a9c2b6}
+.bar{height:10px;background:#ffffff22;border-radius:9px;margin-top:18px;overflow:hidden}.bar i{display:block;height:100%;background:var(--lime);border-radius:9px}
+h2{font:700 24px Manrope,system-ui;letter-spacing:-.03em;margin:0 0 18px}
+.chart svg{width:100%;height:auto;display:block}
+.row{display:flex;align-items:center;gap:16px;padding:18px 8px;border-top:1px solid var(--line);cursor:pointer;border-radius:12px;transition:background .15s}
+.row:first-of-type{border-top:0}.row:hover,.row:focus-visible{background:#f6f9e8;outline:0}
+.av{width:46px;height:46px;border-radius:50%;background:var(--g);color:var(--lime);display:grid;place-items:center;font:700 16px Manrope;flex:none}
+.row b{display:block;font-size:19px}.row span.m{color:var(--mut);font-size:16px}.row .r{margin-left:auto;text-align:right;color:var(--mut);font-size:15px;white-space:nowrap}
+.tag{display:inline-block;padding:4px 13px;border-radius:99px;font-size:14px;font-weight:700;margin-bottom:4px}.ok{background:#dff6cc;color:#1b4a1e}.wait{background:#ffeec3;color:#6b4700}.no{background:#ececec;color:#4a4a4a}
+.next{display:flex;gap:18px;align-items:center;margin-top:14px}.date{background:var(--lime);color:#0b1d19;border-radius:16px;padding:12px 16px;text-align:center;font:700 14px Manrope;line-height:1.1;letter-spacing:.06em}.date strong{display:block;font-size:34px;letter-spacing:-.04em}
+.drawer{position:fixed;top:0;right:0;width:min(520px,100%);height:100%;background:#fff;box-shadow:-30px 0 80px -20px #0b1d1966;padding:38px 34px;transform:translateX(105%);transition:transform .45s cubic-bezier(.2,.7,.2,1);overflow:auto;z-index:20}
+.drawer.open{transform:none}.drawer h3{font:700 32px/1.1 Manrope;letter-spacing:-.04em;margin:8px 0 22px}
+.drawer dl{display:grid;grid-template-columns:140px 1fr;gap:14px 12px;margin:0}.drawer dt{color:var(--mut)}.drawer dd{margin:0;font-weight:600}
+.x{float:right;border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 18px;font:600 16px 'DM Sans';cursor:pointer}
+.scrim{position:fixed;inset:0;background:#07110f66;opacity:0;pointer-events:none;transition:opacity .3s;z-index:19}.scrim.on{opacity:1;pointer-events:auto}
+.hidden{display:none}
+textarea,select{width:100%;font:18px/1.55 'DM Sans';padding:16px;border:1px solid #cfd5c9;border-radius:14px;background:#fbfbf7}
+.btn{font:700 17px Manrope;padding:15px 24px;border-radius:12px;border:0;background:var(--ink);color:#fff;cursor:pointer}.btn.sec{background:#fff;color:var(--ink);border:1px solid #bfc8bb}.btn:disabled{opacity:.45;cursor:not-allowed}
+.note{background:#f1f6e3;border-radius:14px;padding:16px 18px;margin:0 0 18px;font-size:16px;color:#37503f}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);padding:0 8px 12px}td{padding:18px 8px;border-top:1px solid var(--line)}
+@media(max-width:980px){body{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:14px}.logo{padding:0 12px 0 4px}nav{display:flex;flex-wrap:wrap}nav button{width:auto;padding:12px 14px}.side-foot{display:none}main{padding:24px 18px 50px}.k1,.k2,.k3,.wide,.side{grid-column:span 12}.big{font-size:52px}.top h1{font-size:34px}}
+.card,main{animation:fin .8s cubic-bezier(.2,.7,.2,1) both}@keyframes fin{from{opacity:0;transform:translateY(18px)}}</style></head><body>
+<aside><div class="logo">RS<span> / ENERGIE</span></div>
+<nav role="tablist" aria-label="Bereiche">
+<button role="tab" aria-selected="true" data-t="uebersicht"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Übersicht</button>
+<button role="tab" aria-selected="false" data-t="anfragen"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Anfragen</button>
+<button role="tab" aria-selected="false" data-t="termine"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Termine</button>
+<button role="tab" aria-selected="false" data-t="assistent"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 14 0v3a2 2 0 0 1-2 2h-1v-5h3M5 12v5h1a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H5"/></svg>Assistent</button>
+</nav>
+<div class="side-foot"><a href="index.html">Zur Webseite</a><a href="login.html" onclick="sessionStorage.removeItem('rs-demo')">Abmelden</a></div></aside>
+<main>
+<section id="uebersicht"><div class="top"><div><small>Mittwoch, 14. Oktober</small><h1>Guten Tag, Herr Scheel.</h1></div><span class="chip">Letzte Aktualisierung: eben</span></div>
+<div class="grid">
+<div class="card k1"><small>Neue Anfragen · Woche</small><div class="big">7</div><div class="sub">davon 4 qualifiziert</div></div>
+<div class="card k2"><small>Nächster Termin</small><div class="next"><div class="date">DO<strong>15</strong></div><div><b>10:30 Uhr</b><div class="sub">Hausverwaltung Nord GmbH<br>Mieterstrom</div></div></div></div>
+<div class="card k3 dark"><small>Telefonminuten</small><div class="big">42 <em>von 500</em></div><div class="sub">Startpaket, einmalig</div><div class="bar"><i style="width:8.4%"></i></div></div>
+<div class="card wide chart"><h2>Anfragen der letzten 8 Wochen</h2>
+<svg viewBox="0 0 640 200" role="img" aria-label="Verlauf der Anfragen"><defs><linearGradient id="a" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#14352c" stop-opacity=".28"/><stop offset="1" stop-color="#14352c" stop-opacity="0"/></linearGradient></defs>
+<g stroke="#e2e4d9"><path d="M0 40H640M0 90H640M0 140H640M0 190H640"/></g>
+<path d="M0 150 L91 130 L182 140 L273 100 L364 110 L455 70 L546 80 L640 40 V190 H0Z" fill="url(#a)"/><path d="M0 150 L91 130 L182 140 L273 100 L364 110 L455 70 L546 80 L640 40" fill="none" stroke="#14352c" stroke-width="3.5" stroke-linejoin="round"/><circle cx="640" cy="40" r="7" fill="#cff66e" stroke="#14352c" stroke-width="3"/></svg></div>
+<div class="card side"><h2>Aus der Anfrage zum Termin</h2><div class="sub" style="display:grid;gap:14px"><div><b style="color:#0b1d19;font-size:22px">7</b> Anfragen</div><div><b style="color:#0b1d19;font-size:22px">5</b> erreicht</div><div><b style="color:#0b1d19;font-size:22px">4</b> qualifiziert</div><div><b style="color:#0b1d19;font-size:22px">3</b> Termine</div></div></div>
+<div class="card full"><h2>Zuletzt eingegangen</h2><div id="recent"></div></div>
+</div></section>
+<section id="anfragen" class="hidden"><div class="top"><div><small>Alle Kontakte</small><h1>Anfragen</h1></div></div><div class="note">Tippen Sie auf eine Zeile, um alle Details zu sehen.</div><div class="card"><div id="leads"></div></div></section>
+<section id="termine" class="hidden"><div class="top"><div><small>Kommende Gespräche</small><h1>Termine</h1></div></div><div class="card"><table><thead><tr><th>Wann</th><th>Mit</th><th>Thema</th></tr></thead><tbody><tr><td><b>Do 10:30</b></td><td>Hausverwaltung Nord GmbH</td><td>Mieterstrom</td></tr><tr><td><b>Fr 14:00</b></td><td>Thomas Becker</td><td>Photovoltaik</td></tr><tr><td><b>Di 09:00</b></td><td>Beispiel Kunde</td><td>Wärmepumpe</td></tr></tbody></table></div></section>
+<section id="assistent" class="hidden"><div class="top"><div><small>Telefon-Assistent</small><h1>Assistent</h1></div></div>
+<div class="card"><div class="note">Hier steht, was der Assistent am Telefon sagt. Änderungen werden erst nach Ihrer Bestätigung aktiv. Die letzte Version bleibt zum Zurücksetzen erhalten.</div>
+<label for="pr"><b>Gesprächsanweisung</b></label><p><textarea id="pr" rows="9" readonly>Beispieltext: Sie sind die telefonische Assistentin der Energieberatung Scheel. Sie rufen Interessenten an, die ihre Nummer hinterlassen haben, und qualifizieren sie für ein kostenloses Erstgespräch. Natürliches, freundliches Deutsch, kurze Sätze, Sie-Form. Immer nur eine Frage auf einmal.</textarea></p>
+<p><label for="vo"><b>Stimme</b></label><select id="vo" disabled><option>Carola (Deutsch)</option></select></p>
+<p><button class="btn" disabled>Änderung speichern</button> &nbsp; <button class="btn sec" disabled>Letzte Version wiederherstellen</button></p></div></section>
+</main>
+<div class="scrim" id="scrim"></div><div class="drawer" id="drawer" aria-hidden="true"></div>
+<script>
+if(!sessionStorage.getItem('rs-demo'))location.replace('login.html');
+const L=[{n:'Thomas Becker',t:'Photovoltaik',r:'Eigentümer',g:'Einfamilienhaus',plz:'41812',s:'qualifiziert',d:'Heute 09:12',tel:'0151 000 0001',note:'Dach ca. 90 m², Südseite, Entscheidung in 3 Monaten.'},{n:'Hausverwaltung Nord GmbH',t:'Mieterstrom',r:'Hausverwaltung',g:'Mehrfamilienhaus (24 WE)',plz:'40210',s:'Termin',d:'Gestern 16:40',tel:'0151 000 0002',note:'Eigentümerversammlung im Oktober, Termin Do 10:30.'},{n:'Sabine Kuhn',t:'Wärmepumpe',r:'Eigentümer',g:'Einfamilienhaus',plz:'50667',s:'offen',d:'Mo 18:05',tel:'0151 000 0003',note:'Rückruf zweimal nicht erreicht.'},{n:'Jürgen Maier',t:'Photovoltaik',r:'Eigentümer',g:'Einfamilienhaus',plz:'47051',s:'nicht passend',d:'Mo 11:20',tel:'0151 000 0004',note:'Kein Eigentümer.'}];
+const cls={'qualifiziert':'ok','Termin':'ok','offen':'wait','nicht passend':'no'};
+const ini=n=>n.split(' ').slice(0,2).map(w=>w[0]).join('');
+const list=rows=>rows.map(x=>`<div class="row" tabindex="0" data-n="${x.n}"><div class="av">${ini(x.n)}</div><div><b>${x.n}</b><span class="m">${x.t} · ${x.g}</span></div><div class="r"><span class="tag ${cls[x.s]}">${x.s}</span><br>${x.d}</div></div>`).join('');
+recent.innerHTML=list(L.slice(0,3));leads.innerHTML=list(L);
+function show(t){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==t));document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function close(){drawer.classList.remove('open');scrim.classList.remove('on');drawer.setAttribute('aria-hidden','true')}
+function open(n){const x=L.find(l=>l.n===n);drawer.innerHTML=`<button class="x" id="cl">Schließen</button><span class="tag ${cls[x.s]}">${x.s}</span><h3>${x.n}</h3><dl><dt>Thema</dt><dd>${x.t}</dd><dt>Rolle</dt><dd>${x.r}</dd><dt>Gebäude</dt><dd>${x.g}</dd><dt>PLZ</dt><dd>${x.plz}</dd><dt>Telefon</dt><dd>${x.tel}</dd><dt>Eingang</dt><dd>${x.d}</dd><dt>Notiz</dt><dd>${x.note}</dd></dl>`;drawer.classList.add('open');scrim.classList.add('on');drawer.setAttribute('aria-hidden','false');cl.onclick=close}
+document.addEventListener('click',e=>{const r=e.target.closest('.row');if(r)open(r.dataset.n)});
+scrim.onclick=close;document.addEventListener('keydown',e=>{if(e.key==='Escape')close();if(e.key==='Enter'&&e.target.classList.contains('row'))e.target.click()});
+</script></body></html>
