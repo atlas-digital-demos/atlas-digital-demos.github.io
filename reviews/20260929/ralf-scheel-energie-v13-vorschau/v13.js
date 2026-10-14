@@ -93,7 +93,7 @@ if(cards.length){cards.forEach((c,i)=>{const im=c.querySelector('img');gsap.from
 const hd=document.querySelector('header');if(hd){let ly=0,hid=false;ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();const d=y-ly;if(Math.abs(d)<6)return;const hide=d>0&&y>400;if(hide!==hid){hid=hide;hd.style.transform=hide?'translateY(-110%)':'';}ly=y}});hd.style.transition='transform .45s cubic-bezier(.2,.7,.2,1)'}
 // Anker laufen ueber Lenis
 if(window.__scheelLenis)document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();window.__scheelLenis.scrollTo(t,{offset:-10,duration:1.6})}));
-setTimeout(()=>{ScrollTrigger.sort();ScrollTrigger.refresh()},900);
+setTimeout(()=>{ScrollTrigger.sort();ScrollTrigger.refresh();const h=location.hash;if(h&&h.length>1){const t=document.querySelector(h);if(t){const y=t.getBoundingClientRect().top+scrollY-(h==='#formular'?0:10);window.__scheelLenis?window.__scheelLenis.scrollTo(y,{immediate:true}):scrollTo(0,y)}}},900);
 }
 if(rm)return;
 if(document.readyState==='complete')setTimeout(go,300);else addEventListener('load',()=>setTimeout(go,300));
