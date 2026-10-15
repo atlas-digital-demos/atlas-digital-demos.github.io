@@ -5,7 +5,7 @@ try {
   const mobile = innerWidth < 700;
   const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: false, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
-  renderer.setClearColor(0x060606, 1);
+  renderer.setClearColor(0x000000, 0);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(48, 1, .1, 100);
   camera.position.set(0, 2.2, 7.5);

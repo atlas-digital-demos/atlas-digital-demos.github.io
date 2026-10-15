@@ -74,6 +74,7 @@
   var hero = document.querySelector('.hero');
   gsap.to('.hero__body', { yPercent: -16, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
   ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', scrub: true, onUpdate: function (s) { if (window.RRHERO) window.RRHERO.p = s.progress; } });
+  gsap.fromTo('.hero__media video', { scale: 1 }, { scale: 1.35, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
   gsap.to('.hero canvas.gl', { scale: 1.18, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
 
   /* line reveals for all headings */
@@ -120,17 +121,17 @@
   mm.add('(min-width: 901px)', function () {
     var tl = gsap.timeline({ scrollTrigger: { trigger: imp, start: 'top top', end: '+=2200', pin: '.imp__pin', scrub: .6 } });
     msgs.forEach(function (m, i) { tl.from(m, { y: 260, scale: .94, duration: 1, ease: 'power3.out' }, i * 1.15); });
-    tl.fromTo('.phone', { rotationY: 18, rotationX: 6, transformPerspective: 1400 }, { rotationY: -10, rotationX: 0, duration: msgs.length * 1.15, ease: 'none' }, 0);
+    tl.fromTo('.iph', { rotationY: 32, rotationX: 8, rotationZ: -3, transformPerspective: 1600 }, { rotationY: -24, rotationX: 0, rotationZ: 2, duration: msgs.length * 1.15, ease: 'none' }, 0);
     var map = [0, 1, 1, 2, 3, 3];
     steps.forEach(function (st, k) {
       ScrollTrigger.create({ trigger: imp, start: 'top top-=' + (k * 500) , end: '+=500', onToggle: function (s) { if (s.isActive) { steps.forEach(function (x) { x.classList.remove('on'); }); st.classList.add('on'); } } });
     });
   });
   mm.add('(max-width: 900px)', function () {
-    var tl = gsap.timeline({ scrollTrigger: { trigger: '.phone', start: 'top 80%', end: 'bottom 45%', scrub: .6 } });
+    var tl = gsap.timeline({ scrollTrigger: { trigger: '.iph', start: 'top 80%', end: 'bottom 45%', scrub: .6 } });
     msgs.forEach(function (m, i) { tl.from(m, { y: 200, scale: .94, duration: 1, ease: 'power3.out' }, i * .9); });
   });
-  gsap.from('.phone__bar', { y: -20, duration: 1, scrollTrigger: { trigger: '.phone', start: 'top 85%' } });
+  
 
   /* flow canvas */
   (function () {
@@ -265,5 +266,10 @@
     b.addEventListener('pointerleave', function () { gsap.to(b, { x: 0, y: 0, duration: .6, ease: 'elastic.out(1,.5)' }); });
   });
 
-  addEventListener('load', function () { ScrollTrigger.refresh(); });
+  addEventListener('load', function () {
+    ScrollTrigger.refresh();
+    var pv = document.querySelector('.pagebg video');
+    setTimeout(function () { if (!pv || reduce) return; pv.src = pv.dataset.src; pv.play().then(function () { pv.classList.add('on'); }).catch(function () {}); }, 600);
+    var hv = document.querySelector('.hero__media video'); if (hv) { var pp = hv.play(); if (pp && pp.catch) pp.catch(function () {}); }
+  });
 })();
